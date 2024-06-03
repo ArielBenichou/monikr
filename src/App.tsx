@@ -5,12 +5,13 @@ import { produce } from "immer";
 import AlgorithmsSection from "./features/AlgorithmsSection";
 import useAlgorithms from "./features/AlgorithmsSection/useAlgorithms";
 import { isNot, isTruthy, join, keys, omitBy, pipe } from "remeda";
+import GithubIcon from "./components/icons/GithubIcon";
 
 export default function App() {
   const [include, setInclude] = useTagListInput();
   const [exclude, setExclude] = useTagListInput();
   const [words, setWords] = useTagListInput();
-  const { algorithms, setAlgorithms } = useAlgorithms();
+  const { algorithms, setAlgorithms, resetAlgorithms } = useAlgorithms();
 
   const crossUpdateLetters = (from: "include" | "exclude") => (v: string[]) => {
     (from === "exclude" ? setInclude : setExclude)(produce(draft => {
@@ -20,10 +21,21 @@ export default function App() {
     }));
   }
 
+  const reset = () => {
+    setInclude(new Set());
+    setExclude(new Set());
+    setWords(new Set());
+    resetAlgorithms();
+
+  }
+
   return (
     <main className="h-dvh w-dvw flexbox gap-2">
-      <div className="self-start p-4">
-        <Logo />
+      <div className="flex justify-between items-center w-full self-start p-4">
+        <Logo onClick={reset} />
+        <a href="https://github.com/ArielBenichou/monikr" target="_blank">
+          <GithubIcon className="size-10 cursor-pointer" />
+        </a>
       </div>
       <div className="flexbox flex-row p-4 items-start">
         {/* FILTERS */}
