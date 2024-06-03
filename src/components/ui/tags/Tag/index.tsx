@@ -27,7 +27,7 @@ const tag = tv({
       md: { base: "pl-3" },
     },
     color: {
-      default: { base: "bg-black text-white" },
+      default: { base: "bg-black text-white", icon: "stroke-gray-400" },
       primary: { base: "bg-blue-500 text-white", icon: "stroke-white" },
       danger: { base: "bg-red-500 text-white", icon: "stroke-white" },
     },

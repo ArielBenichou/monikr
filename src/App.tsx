@@ -37,9 +37,9 @@ export default function App() {
           <GithubIcon className="size-10 cursor-pointer" />
         </a>
       </div>
-      <div className="flexbox flex-row p-4 items-start">
+      <div className="flexbox flex-col md:flex-row gap-4 p-4 items-start">
         {/* FILTERS */}
-        <Card>
+        <Card className="order-3 md:order-1">
           <div className="font-semibold text-xl">Filters</div>
           <TagListInput
             label="Include"
@@ -69,7 +69,7 @@ export default function App() {
         </Card>
 
         {/* MAIN */}
-        <div className="flexbox grow-[2]">
+        <div className="flexbox grow-[2] order-1 md:order-2">
           <b>State Reflect:</b>
           <div>letters inc: {[...include.values()].join(", ")}</div>
           <div>letters ex: {[...exclude.values()].join(", ")}</div>
@@ -84,7 +84,7 @@ export default function App() {
         </div>
 
         {/* FLAGS */}
-        <Card>
+        <Card className="order-2 md:order-3">
           <div className="font-semibold text-xl">Algorithms</div>
           <AlgorithmsSection value={algorithms} setValue={setAlgorithms} />
         </Card>
