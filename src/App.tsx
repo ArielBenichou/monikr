@@ -1,17 +1,23 @@
 import { Input } from "@nextui-org/input";
 import Logo from "./components/Logo";
-import { useState } from "react";
 import ToggleList from "./components/ui/ToggleList";
-import TagList from "./components/ui/tags/TagList";
-import { onEnter } from "./utils/keyboard/on-key";
-import { produce } from "immer";
 import Card from "./components/ui/Card";
 import TagListInput, { useTagListInput } from "./components/ui/tags/TagListInput";
+import { onEnter } from "./utils/keyboard/on-key";
+import { produce } from "immer";
 
 export default function App() {
   const [include, setInclude] = useTagListInput();
   const [exclude, setExclude] = useTagListInput();
   const [words, setWords] = useTagListInput();
+
+  const crossUpdateLetters = (from: "include" | "exclude") => (v: string[]) => {
+    (from === "exclude" ? setInclude : setExclude)(produce(draft => {
+      v.forEach((value) =>
+        draft.delete(value)
+      );
+    }));
+  }
 
   return (
     <main className="h-dvh w-dvw flexbox gap-2">
@@ -28,6 +34,7 @@ export default function App() {
             value={include}
             setValue={setInclude}
             splitter=""
+            onSync={crossUpdateLetters("include")}
           />
           <TagListInput
             label="Exclude"
@@ -36,6 +43,7 @@ export default function App() {
             value={exclude}
             setValue={setExclude}
             splitter=""
+            onSync={crossUpdateLetters("exclude")}
           />
           <TagListInput
             label="Words"
@@ -55,6 +63,7 @@ export default function App() {
         {/* FLAGS */}
         <Card>
           <div className="font-semibold text-xl">Algorithms</div>
+          <Input variant="underlined" placeholder="search..." size="sm" onKeyDown={onEnter(console.log)} />
           <ToggleList />
         </Card>
       </div>

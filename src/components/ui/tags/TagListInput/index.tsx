@@ -15,7 +15,7 @@ export default function TagListInput({ label, value, setValue, onSync, splitter,
       newTags.forEach(letter => {
         draft.add(letter.toLowerCase())
       });
-      onSync?.(new Set(newTags));
+      onSync?.(newTags);
     }));
     setInputValue("");
   }
@@ -47,11 +47,10 @@ export default function TagListInput({ label, value, setValue, onSync, splitter,
 
 export { useTagListInput };
 
-type Value = ReturnType<typeof useTagListInput>[0];
 interface Props extends TagProps {
   label?: string;
-  value: Value;
+  value: ReturnType<typeof useTagListInput>[0];
   setValue: ReturnType<typeof useTagListInput>[1];
   splitter?: string;
-  onSync?: (value: Value) => void;
+  onSync?: (value: string[]) => void;
 }

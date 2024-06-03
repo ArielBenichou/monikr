@@ -24,7 +24,7 @@ const gradiant = (word: string) => {
     // "extrabold",
     "black",
   ].map(w => "font-" + w).reverse();
-  return zip(word.split(""), weights).map(([letter, weight]) =>
-    <span className={weight}>{letter}</span>
+  return zip(word.split(""), weights).map(([letter, weight], idx) =>
+    <span key={idx} className={weight}>{letter}</span>
   );
 }
