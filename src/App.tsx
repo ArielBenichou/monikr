@@ -1,15 +1,16 @@
-import { Input } from "@nextui-org/input";
 import Logo from "./components/Logo";
-import ToggleList from "./components/ui/ToggleList";
 import Card from "./components/ui/Card";
 import TagListInput, { useTagListInput } from "./components/ui/tags/TagListInput";
-import { onEnter } from "./utils/keyboard/on-key";
 import { produce } from "immer";
+import AlgorithmsSection from "./features/AlgorithmsSection";
+import useAlgorithms from "./features/AlgorithmsSection/useAlgorithms";
+import { isNot, isTruthy, join, keys, omitBy, pipe } from "remeda";
 
 export default function App() {
   const [include, setInclude] = useTagListInput();
   const [exclude, setExclude] = useTagListInput();
   const [words, setWords] = useTagListInput();
+  const { algorithms, setAlgorithms } = useAlgorithms();
 
   const crossUpdateLetters = (from: "include" | "exclude") => (v: string[]) => {
     (from === "exclude" ? setInclude : setExclude)(produce(draft => {
@@ -57,14 +58,23 @@ export default function App() {
 
         {/* MAIN */}
         <div className="flexbox grow-[2]">
-          main
+          <b>State Reflect:</b>
+          <div>letters inc: {[...include.values()].join(", ")}</div>
+          <div>letters ex: {[...exclude.values()].join(", ")}</div>
+          <div>words: {[...words.values()].join(", ")}</div>
+          <div>algorithms: {pipe(
+            algorithms,
+            omitBy(isNot(isTruthy)),
+            keys,
+            join(", ")
+          )}
+          </div>
         </div>
 
         {/* FLAGS */}
         <Card>
           <div className="font-semibold text-xl">Algorithms</div>
-          <Input variant="underlined" placeholder="search..." size="sm" onKeyDown={onEnter(console.log)} />
-          <ToggleList />
+          <AlgorithmsSection value={algorithms} setValue={setAlgorithms} />
         </Card>
       </div>
     </main>
